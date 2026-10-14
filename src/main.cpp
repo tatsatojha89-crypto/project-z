@@ -3,15 +3,16 @@
 #include<vector>
 #include<cstdlib>
 #include<cmath>
+#include<iostream>
 
 int main()
 {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-
+	int count = 0;
 
 	//making of space ship sprite
 	sf::Texture texture;
-	if (!texture.loadFromFile("../../../assets/spaceShip.png"))
+	if (!texture.loadFromFile("assets/spaceShip.png"))
 	{
 		return -1;
 	}
@@ -29,7 +30,7 @@ int main()
 
 	//making of flame sprite
 	sf::Texture flameTexture;
-	if (!flameTexture.loadFromFile("../../../assets/flame1.png"))
+	if (!flameTexture.loadFromFile("assets/flame1.png"))
 	{
 		return -1;
 	}
@@ -40,7 +41,7 @@ int main()
 
 	//making of bullet sprite
 	sf::Texture bulletTexture;
-	if (!bulletTexture.loadFromFile("../../../assets/attack8.png"))
+	if (!bulletTexture.loadFromFile("assets/attack8.png"))
 	{
 		return -1;
 	}
@@ -61,19 +62,20 @@ int main()
 
 	//making of bullet2 sprite
 	sf::Texture bulletTexture2;
-	if (!bulletTexture2.loadFromFile("../../../assets/bestAttack.png"))
+	if (!bulletTexture2.loadFromFile("assets/flair.png"))
 	{
 		return -1;
 	}
 	sf::Sprite bullet2(bulletTexture2);
 	bullet2.setOrigin(bulletTexture2.getSize().x / 2, bulletTexture2.getSize().y / 5);
-	bullet2.setScale(0.2f, 0.2f);
-	sf::Vector2f velocity2(0.f, -300.f);
+	bullet2.setScale(0.3f, 0.3f);
+	sf::Vector2f velocity2(0.f, -1200.f);
 	bool bulletActive2 = false;
-
+	
+	
 
 	//making window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Template");
+	sf::RenderWindow window(sf::VideoMode(1200, 1000), "SFML Template");
 	sf::Clock clock;
 
 	while (window.isOpen())
@@ -201,16 +203,19 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::B) && !bulletActive2) {
 			bullet2.setPosition(sprite.getPosition().x, sprite.getPosition().y);
 			bulletActive2 = true;
+			count = 0;
 
 		}
 		
 
 		if (bulletActive2) {
 			bullet2.move(velocity2 * dt);
+			
+		
 		if (bullet2.getPosition().y < -200) {
 			bulletActive2 = false;
 		}
-
+		
 		}
 
 
@@ -240,11 +245,13 @@ int main()
 		// Flickering logic
 		float flameflicker = 0.8f + static_cast<float>(rand() % 40) / 100.f;
 		float bulletFlicker = 0.93f + static_cast<float>(rand() % 50) / 100.f;
+		
 			
 		float bulletshift = static_cast<float>(rand() % 2 - 0.5);
 		bullet.setPosition(bullet.getPosition().x + bulletshift, bullet.getPosition().y);
 		bullet.setScale(0.3f * bulletFlicker, 0.3f * bulletFlicker);
-		
+		bullet2.setPosition(bullet2.getPosition().x + bulletshift, bullet2.getPosition().y);
+		bullet2.setScale(0.3f * bulletFlicker, 0.3f * bulletFlicker);
 		
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
@@ -287,6 +294,7 @@ int main()
 
 
 		window.display();
+		
 	}
 	return 0;
 }
